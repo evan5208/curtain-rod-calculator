@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Curtain Rod & Bracket Calculator | LuxDrape</title>
+  <meta name="description" content="Free calculator for curtain rods: rod length, bracket count, and spacing. Plan hardware for custom curtains before ordering at LuxDrape." />
+  <meta name="robots" content="index,follow" />
+  <style>
+    :root{--bg:#f6f8fb;--card:#fff;--ink:#222;--muted:#555;--line:#e5e7eb;--brand:#0b73f5}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial,ui-sans-serif; background:var(--bg); color:var(--ink)}
+    a{color:var(--brand); text-decoration:none} a:hover{text-decoration:underline}
+    header{background:var(--card); border-bottom:1px solid var(--line)}
+    .wrap{max-width:950px; margin:0 auto; padding:22px}
+    h1{margin:0 0 6px; font-size:24px}
+    p.lead{margin:6px 0 0; color:var(--muted)}
+    .card{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; margin:18px 0}
+    label{display:block; margin-top:8px; font-size:14px}
+    input{width:100%; padding:10px 12px; border:1px solid #ccc; border-radius:8px}
+    .btn{display:inline-block; padding:10px 16px; border-radius:8px; background:var(--brand); color:#fff; text-decoration:none; margin-top:12px; cursor:pointer; border:0}
+    .muted{background:#787f87}
+    .results{font-size:15px; margin-top:12px}
+    .tip{font-size:13px; color:#666}
+    footer{color:#777; text-align:center; padding:26px 0 40px}
+    .stage{margin-top:12px; border:1px dashed #cbd5e1; border-radius:12px; padding:12px}
+    .rod{height:8px; background:#333; border-radius:4px}
+    .br{height:18px; width:6px; background:#9aa6b2; border-radius:3px}
+    .row{display:flex; gap:10px; align-items:center; margin-top:10px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Curtain Rod & Bracket Calculator</h1>
+      <p class="lead">
+        Plan hardware for your <a href="https://luxdrape.com/" target="_blank" rel="noopener">Custom Curtains</a>. Enter width and overhang to get rod length, bracket count and spacing.
+      </p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="card">
+      <h2>1) Inputs (inches)</h2>
+      <label for="win">Opening width</label>
+      <input id="win" type="number" min="1" step="0.1" placeholder="e.g. 72">
+
+      <label for="over">Side overhang per side</label>
+      <input id="over" type="number" min="0" step="0.1" placeholder="e.g. 6">
+
+      <div>
+        <button class="btn" id="calc">Calculate</button>
+        <button class="btn muted" id="reset" type="button">Reset</button>
+      </div>
+
+      <p class="tip">Tip: For blackout and stackback, use larger overhang (6–10 in each side).</p>
+    </section>
+
+    <section class="card">
+      <h2>2) Results</h2>
+      <div id="out" class="results"><p>Fill inputs and click <strong>Calculate</strong>.</p></div>
+
+      <div class="stage" id="viz" aria-hidden="true" style="display:none">
+        <div class="rod" id="rodviz"></div>
+        <div class="row" id="brrow"></div>
+      </div>
+
+      <a class="btn" href="https://luxdrape.com/" target="_blank" rel="noopener">Order at LuxDrape ↗</a>
+    </section>
+
+    <section class="card">
+      <h2>3) Helpful links</h2>
+      <ul>
+        <li><a href="https://luxdrape.com/" target="_blank" rel="noopener">Custom Curtains — LuxDrape</a></li>
+        <li><a href="https://luxdrape.com/collections/blackout" target="_blank" rel="noopener">Blackout Custom Curtains</a></li>
+        <li><a href="https://luxdrape.com/collections/velvet" target="_blank" rel="noopener">Velvet Custom Curtains</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    © <span id="y"></span> LuxDrape • Clean backlinks to
+    <a href="https://luxdrape.com/" target="_blank" rel="noopener">Custom Curtains</a>.
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    function compute(){
+      const w = parseFloat(document.getElementById('win').value);
+      const oh = parseFloat(document.getElementById('over').value || 0);
+
+      if(!(w>0)){ document.getElementById('out').innerHTML = '<p>Please enter a valid opening width.</p>'; return; }
+
+      const rod = w + 2*oh;
+
+      // Bracket rule of thumb:
+      // <= 60" → 2 brackets; 60–108" → 3; >108" → 4
+      let brackets = 2;
+      if(rod > 60 && rod <= 108) brackets = 3;
+      else if(rod > 108) brackets = 4;
+
+      const spacing = rod / (brackets - 1);
+
+      document.getElementById('out').innerHTML = `
+        <p><strong>Recommended rod length:</strong> ${rod.toFixed(1)} in</p>
+        <p><strong>Bracket count:</strong> ${brackets}</p>
+        <p><strong>Approx. spacing between brackets:</strong> ${spacing.toFixed(1)} in</p>
+      `;
+
+      // simple viz
+      const viz = document.getElementById('viz');
+      const brrow = document.getElementById('brrow');
+      viz.style.display = 'block';
+      brrow.innerHTML = '';
+      const span = 100; // arbitrary width for visualization
+      const gaps = brackets - 1;
+      for(let i=0;i<brackets;i++){
+        const el = document.createElement('div');
+        el.className = 'br';
+        brrow.appendChild(el);
+        if(i<gaps){
+          const g = document.createElement('div');
+          g.style.height='1px';
+          g.style.background='#ddd';
+          g.style.flex='1';
+          brrow.appendChild(g);
+        }
+      }
+    }
+
+    document.getElementById('calc').addEventListener('click', compute);
+    document.getElementById('reset').addEventListener('click', () => {
+      document.getElementById('out').innerHTML = '<p>Fill inputs and click <strong>Calculate</strong>.</p>';
+      document.getElementById('viz').style.display = 'none';
+      document.getElementById('win').value = '';
+      document.getElementById('over').value = '';
+    });
+  </script>
+</body>
+</html>
