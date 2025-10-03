@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Curtain Rod & Bracket Calculator | LuxDrape</title>
-  <meta name="description" content="Free calculator for curtain rods: rod length, bracket count, and spacing. Plan hardware for custom curtains before ordering at LuxDrape." />
+  <title>Curtain Rod & Bracket Calculator | WorldHomeExpo</title>
+  <meta name="description" content="Free calculator for curtain rods: rod length, bracket count, and spacing. Plan hardware for custom curtains before ordering at WorldHomeExpo." />
   <meta name="robots" content="index,follow" />
   <style>
     :root{--bg:#f6f8fb;--card:#fff;--ink:#222;--muted:#555;--line:#e5e7eb;--brand:#0b73f5}
@@ -34,30 +34,30 @@
     <div class="wrap">
       <h1>Curtain Rod & Bracket Calculator</h1>
       <p class="lead">
-        Plan hardware for your <a href="https://luxdrape.com/" target="_blank" rel="noopener">Custom Curtains</a>. Enter width and overhang to get rod length, bracket count and spacing.
+        Plan hardware for your <a href="https://worldhomeexpo.com/" target="_blank" rel="noopener">Custom Curtains</a>. Enter width and overhang to get rod length, bracket count and spacing.
       </p>
     </div>
   </header>
 
   <main class="wrap">
-    <section class="card">
-      <h2>1) Inputs (inches)</h2>
+    <section class="card" aria-labelledby="inputsHeading">
+      <h2 id="inputsHeading">1) Inputs (inches)</h2>
       <label for="win">Opening width</label>
-      <input id="win" type="number" min="1" step="0.1" placeholder="e.g. 72">
+      <input id="win" type="number" min="1" step="0.1" placeholder="e.g. 72" inputmode="decimal" required aria-required="true">
 
       <label for="over">Side overhang per side</label>
-      <input id="over" type="number" min="0" step="0.1" placeholder="e.g. 6">
+      <input id="over" type="number" min="0" step="0.1" placeholder="e.g. 6" inputmode="decimal">
 
       <div>
-        <button class="btn" id="calc">Calculate</button>
-        <button class="btn muted" id="reset" type="button">Reset</button>
+        <button class="btn" id="calc" aria-label="Calculate">Calculate</button>
+        <button class="btn muted" id="reset" type="button" aria-label="Reset form">Reset</button>
       </div>
 
       <p class="tip">Tip: For blackout and stackback, use larger overhang (6–10 in each side).</p>
     </section>
 
-    <section class="card">
-      <h2>2) Results</h2>
+    <section class="card" aria-labelledby="resultsHeading">
+      <h2 id="resultsHeading">2) Results</h2>
       <div id="out" class="results"><p>Fill inputs and click <strong>Calculate</strong>.</p></div>
 
       <div class="stage" id="viz" aria-hidden="true" style="display:none">
@@ -65,22 +65,22 @@
         <div class="row" id="brrow"></div>
       </div>
 
-      <a class="btn" href="https://luxdrape.com/" target="_blank" rel="noopener">Order at LuxDrape ↗</a>
+      <a class="btn" href="https://worldhomeexpo.com/" target="_blank" rel="noopener" role="button" aria-label="Order at WorldHomeExpo">Order at WorldHomeExpo ↗</a>
     </section>
 
-    <section class="card">
-      <h2>3) Helpful links</h2>
+    <section class="card" aria-labelledby="linksHeading">
+      <h2 id="linksHeading">3) Helpful links</h2>
       <ul>
-        <li><a href="https://luxdrape.com/" target="_blank" rel="noopener">Custom Curtains — LuxDrape</a></li>
-        <li><a href="https://luxdrape.com/collections/blackout" target="_blank" rel="noopener">Blackout Custom Curtains</a></li>
-        <li><a href="https://luxdrape.com/collections/velvet" target="_blank" rel="noopener">Velvet Custom Curtains</a></li>
+        <li><a href="https://worldhomeexpo.com/" target="_blank" rel="noopener">Custom Curtains — WorldHomeExpo</a></li>
+        <li><a href="https://worldhomeexpo.com/collections/blackout" target="_blank" rel="noopener">Blackout Custom Curtains</a></li>
+        <li><a href="https://worldhomeexpo.com/collections/velvet" target="_blank" rel="noopener">Velvet Custom Curtains</a></li>
       </ul>
     </section>
   </main>
 
   <footer>
-    © <span id="y"></span> LuxDrape • Clean backlinks to
-    <a href="https://luxdrape.com/" target="_blank" rel="noopener">Custom Curtains</a>.
+    © <span id="y"></span> WorldHomeExpo • Clean backlinks to
+    <a href="https://worldhomeexpo.com/" target="_blank" rel="noopener">Custom Curtains</a>.
   </footer>
 
   <script>
@@ -90,7 +90,10 @@
       const w = parseFloat(document.getElementById('win').value);
       const oh = parseFloat(document.getElementById('over').value || 0);
 
-      if(!(w>0)){ document.getElementById('out').innerHTML = '<p>Please enter a valid opening width.</p>'; return; }
+      if(!(w>0)){
+        document.getElementById('out').innerHTML = '<p>Please enter a valid opening width.</p>';
+        return;
+      }
 
       const rod = w + 2*oh;
 
@@ -113,7 +116,6 @@
       const brrow = document.getElementById('brrow');
       viz.style.display = 'block';
       brrow.innerHTML = '';
-      const span = 100; // arbitrary width for visualization
       const gaps = brackets - 1;
       for(let i=0;i<brackets;i++){
         const el = document.createElement('div');
